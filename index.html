@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Marketer Portfolio | Kim Jiyeon</title>
+    
+    <!-- 1. 스타일 및 라이브러리 불러오기 (Tailwind CSS, Lucide Icons) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- 2. 폰트 설정 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #000;
+            color: white;
+            overflow-x: hidden;
+            cursor: none; /* 커스텀 커서를 위해 기본 커서 숨김 */
+        }
+        
+        h1, h2, .font-cyber {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* 네온 텍스트 효과 */
+        .text-neon {
+            color: #0affff;
+            text-shadow: 0 0 10px rgba(10, 255, 255, 0.5);
+        }
+
+        .border-neon {
+            border-color: #0affff;
+            box-shadow: 0 0 10px rgba(10, 255, 255, 0.2);
+        }
+
+        /* 커스텀 커서 */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #0affff;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #0affff;
+        }
+
+        /* 스크롤바 커스텀 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0affff;
+            border-radius: 4px;
+        }
+
+        /* 애니메이션 유틸 */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* 비디오 임베드 스타일 */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 비율 */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 이미지 갤러리 스타일 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .image-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+        }
+
+        .image-card:hover .image-overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="selection:bg-[#0affff] selection:text-black">
+
+    <!-- 3. Three.js 배경 (우주 효과) -->
+    <div id="canvas-container" class="fixed top-0 left-0 w-full h-full -z-10 opacity-60"></div>
+
+    <!-- 4. 커스텀 커서 -->
+    <div id="cursor-dot" class="fixed top-0 left-0 rounded-full pointer-events-none z-[100] cursor-dot mix-blend-difference"></div>
+    <div id="cursor-outline" class="fixed top-0 left-0 rounded-full pointer-events-none z-[100] cursor-outline transition-transform duration-100 ease-out mix-blend-difference hidden md:block"></div>
+
+    <!-- 5. 상단 진행 바 -->
+    <div id="progress-bar" class="fixed top-0 left-0 h-1 bg-[#0affff] z-50 w-0 transition-all duration-100 shadow-[0_0_10px_#0affff]"></div>
+
+    <!-- 6. 헤더 -->
+    <header class="fixed top-0 w-full p-6 flex justify-between items-center z-40 mix-blend-difference">
+        <div class="text-2xl font-black tracking-tighter font-cyber cursor-pointer hover:text-[#0affff] transition-colors">KJY.</div>
+        
+        <div class="flex items-center gap-6">
+            <button onclick="openAiModal()" class="hidden md:flex items-center gap-2 px-5 py-2 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all text-xs font-bold tracking-widest uppercase hover-trigger">
+                <i data-lucide="bot" width="14"></i> AI Lab
+            </button>
+            <i data-lucide="menu" class="cursor-pointer hover:text-[#0affff] transition-colors hover-trigger" onclick="toggleMenu()"></i>
+        </div>
+    </header>
+
+    <!-- 메뉴 오버레이 -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black/95 z-[60] flex-col justify-center items-center gap-8 backdrop-blur-xl hidden opacity-0 transition-opacity duration-300">
+        <i data-lucide="x" class="absolute top-8 right-8 cursor-pointer hover:text-[#0affff] hover:rotate-90 transition-all" width="40" height="40" onclick="toggleMenu()"></i>
+        <a href="#hero" onclick="toggleMenu()" class="text-6xl md:text-8xl font-black font-cyber text-transparent stroke-white hover:text-[#0affff] transition-all" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">HERO</a>
+        <a href="#projects" onclick="toggleMenu()" class="text-6xl md:text-8xl font-black font-cyber text-transparent stroke-white hover:text-[#0affff] transition-all" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">PROJECTS</a>
+        <a href="#gallery" onclick="toggleMenu()" class="text-6xl md:text-8xl font-black font-cyber text-transparent stroke-white hover:text-[#0affff] transition-all" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">GALLERY</a>
+        <a href="#journey" onclick="toggleMenu()" class="text-6xl md:text-8xl font-black font-cyber text-transparent stroke-white hover:text-[#0affff] transition-all" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">JOURNEY</a>
+        <a href="#contact" onclick="toggleMenu()" class="text-6xl md:text-8xl font-black font-cyber text-transparent stroke-white hover:text-[#0affff] transition-all" style="-webkit-text-stroke: 1px rgba(255,255,255,0.5);">CONTACT</a>
+    </div>
+
+    <!-- 7. 메인 콘텐츠 -->
+    <main>
+        <!-- HERO 섹션 -->
+        <section id="hero" class="h-screen flex flex-col justify-center items-center text-center px-4 relative">
+            <div class="text-xs md:text-sm tracking-[0.5em] text-[#0affff] mb-4 animate-pulse font-cyber">DIGITAL PORTFOLIO 2025</div>
+            <h1 class="text-6xl md:text-9xl font-black leading-none mb-6 mix-blend-overlay">
+                HUMAN <br/>
+                <span class="text-transparent" style="-webkit-text-stroke: 2px white;">THINKER</span>
+            </h1>
+            <p class="max-w-xl text-gray-400 text-sm md:text-lg mb-12 fade-in">
+                DIGITAL MAKER & STRATEGIST <br/>
+                Crafting futuristic digital experiences that win hearts.
+            </p>
+            <div class="flex flex-col items-center gap-2 text-xs text-gray-500 animate-bounce cursor-pointer hover-trigger" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+                SCROLL TO DISCOVER
+                <i data-lucide="arrow-down" width="16"></i>
+            </div>
+        </section>
+
+        <!-- PROJECTS 섹션 -->
+        <section id="projects" class="min-h-screen bg-black/80 backdrop-blur-sm">
+            <!-- 프로젝트 1 -->
+            <div class="w-full flex flex-col md:flex-row border-t border-white/10 group hover-trigger" onclick="openProjectModal('01')">
+                <div class="w-full md:w-1/2 p-12 flex flex-col justify-center bg-black/50 transition-colors group-hover:bg-white/5">
+                    <div class="text-[#ff00aa] font-mono mb-4">01 / FANDOM</div>
+                    <h2 class="text-5xl md:text-7xl font-black mb-8 text-[#ff00aa] transition-transform group-hover:translate-x-4">KKOJILLAND</h2>
+                    <div class="flex items-center gap-4 text-gray-400 mb-6 font-mono text-sm">
+                        <span>2025</span><div class="h-px w-8 bg-gray-600"></div><span>카지노 컨셉 생일파티</span>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <span class="px-3 py-1 border border-white/20 rounded-full text-xs">Event</span>
+                        <span class="px-3 py-1 border border-white/20 rounded-full text-xs">Gamification</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 h-[50vh] md:h-auto bg-gray-900 flex items-center justify-center relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop" 
+                         alt="KKOJILLAND Casino Event" 
+                         class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 z-10"></div>
+                    <div class="absolute bottom-6 left-6 z-20 text-xs text-gray-400 font-mono">📸 Event Concept</div>
+                </div>
+            </div>
+
+            <!-- 프로젝트 2 -->
+            <div class="w-full flex flex-col md:flex-row border-t border-white/10 group hover-trigger" onclick="openProjectModal('02')">
+                <div class="w-full md:w-1/2 p-12 flex flex-col justify-center bg-black/50 transition-colors group-hover:bg-white/5">
+                    <div class="text-[#0affff] font-mono mb-4">02 / MEGA EVENT</div>
+                    <h2 class="text-5xl md:text-7xl font-black mb-8 text-[#0affff] transition-transform group-hover:translate-x-4">SUWON MEDIA</h2>
+                    <div class="flex items-center gap-4 text-gray-400 mb-6 font-mono text-sm">
+                        <span>2025</span><div class="h-px w-8 bg-gray-600"></div><span>30만 인파 위기관리</span>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <span class="px-3 py-1 border border-white/20 rounded-full text-xs">Risk Mgmt</span>
+                        <span class="px-3 py-1 border border-white/20 rounded-full text-xs">Public</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 h-[50vh] md:h-auto bg-gray-900 flex items-center justify-center relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop" 
+                         alt="SUWON MEDIA Festival" 
+                         class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 z-10"></div>
+                    <div class="absolute bottom-6 left-6 z-20 text-xs text-gray-400 font-mono">📸 Festival Management</div>
+                </div>
+            </div>
+
+             <!-- 프로젝트 3 -->
+             <div class="w-full flex flex-col md:flex-row border-t border-white/10 group hover-trigger" onclick="openProjectModal('03')">
+                <div class="w-full md:w-1/2 p-12 flex flex-col justify-center bg-black/50 transition-colors group-hover:bg-white/5">
+                    <div class="text-[#bd00ff] font-mono mb-4">03 / AI ART</div>
+                    <h2 class="text-5xl md:text-7xl font-black mb-8 text-[#bd00ff] transition-transform group-hover:translate-x-4">BAEKHO</h2>
+                    <div class="flex items-center gap-4 text-gray-400 mb-6 font-mono text-sm">
+                        <span>2024</span><div class="h-px w-8 bg-gray-600"></div><span>청각적 서사의 시각화</span>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <span class="px-3 py-1 border border-white/20 rounded-full text-xs">Gen AI</span>
+                        <span class="px-3 py-1 border border-white/20 rounded-full text-xs">Midjourney</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 h-[50vh] md:h-auto bg-gray-900 flex items-center justify-center relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" 
+                         alt="BAEKHO AI Art" 
+                         class="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 z-10"></div>
+                    <div class="absolute bottom-6 left-6 z-20 text-xs text-gray-400 font-mono">🎨 AI Generated Art</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 새로운 GALLERY 섹션 -->
+        <section id="gallery" class="min-h-screen py-24 px-6 md:px-24 bg-gradient-to-b from-black to-gray-900">
+            <h2 class="text-4xl md:text-6xl font-black mb-12 text-center font-cyber fade-in">VISUAL SHOWCASE</h2>
+            
+            <!-- 비디오 임베드 섹션 -->
+            <div class="mb-20 fade-in">
+                <h3 class="text-2xl font-bold mb-8 text-[#0affff] font-cyber">Featured Works</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- YouTube 비디오 1 -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-gray-900/50">
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                                title="Project Showcase 1" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">Event Highlight Reel</h4>
+                            <p class="text-sm text-gray-400">팬덤 이벤트 하이라이트 영상</p>
+                        </div>
+                    </div>
+
+                    <!-- YouTube 비디오 2 -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-gray-900/50">
+                        <div class="video-wrapper">
+                            <iframe 
+                                src="https://www.youtube.com/embed/jNQXAC9IVRw" 
+                                title="Project Showcase 2" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold mb-2">Festival Documentary</h4>
+                            <p class="text-sm text-gray-400">수원 미디어 페스티벌 다큐멘터리</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 이미지 갤러리 -->
+            <div class="fade-in">
+                <h3 class="text-2xl font-bold mb-8 text-[#ff00aa] font-cyber">Project Gallery</h3>
+                <div class="gallery-grid">
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop" alt="Event Planning">
+                        <div class="image-overlay">
+                            <div>
+                                <h4 class="font-bold">Event Planning</h4>
+                                <p class="text-xs text-gray-300">Strategic Design</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800&auto=format&fit=crop" alt="Music Festival">
+                        <div class="image-overlay">
+                            <div>
+                                <h4 class="font-bold">Music Festival</h4>
+                                <p class="text-xs text-gray-300">Crowd Management</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop" alt="Digital Strategy">
+                        <div class="image-overlay">
+                            <div>
+                                <h4 class="font-bold">Digital Strategy</h4>
+                                <p class="text-xs text-gray-300">Data Analytics</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=800&auto=format&fit=crop" alt="Creative Direction">
+                        <div class="image-overlay">
+                            <div>
+                                <h4 class="font-bold">Creative Direction</h4>
+                                <p class="text-xs text-gray-300">Brand Identity</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=800&auto=format&fit=crop" alt="AI Art Generation">
+                        <div class="image-overlay">
+                            <div>
+                                <h4 class="font-bold">AI Art Generation</h4>
+                                <p class="text-xs text-gray-300">Midjourney Art</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=800&auto=format&fit=crop" alt="Social Media">
+                        <div class="image-overlay">
+                            <div>
+                                <h4 class="font-bold">Social Media</h4>
+                                <p class="text-xs text-gray-300">Campaign Success</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 소셜 미디어 임베드 -->
+            <div class="mt-20 fade-in">
+                <h3 class="text-2xl font-bold mb-8 text-[#bd00ff] font-cyber">Social Media Highlights</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Instagram 스타일 카드 1 -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-gray-900/50 hover:border-[#ff00aa] transition-colors">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop" alt="Instagram Post 1" class="w-full aspect-square object-cover">
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-[#ff00aa] to-[#0affff]"></div>
+                                <span class="font-bold text-sm">@kjy.portfolio</span>
+                            </div>
+                            <p class="text-xs text-gray-400">✨ Behind the scenes of our latest campaign...</p>
+                            <div class="flex gap-4 mt-3 text-xs text-gray-500">
+                                <span>❤️ 1.2K</span>
+                                <span>💬 89</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instagram 스타일 카드 2 -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-gray-900/50 hover:border-[#0affff] transition-colors">
+                        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=800&auto=format&fit=crop" alt="Instagram Post 2" class="w-full aspect-square object-cover">
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-[#0affff] to-[#bd00ff]"></div>
+                                <span class="font-bold text-sm">@kjy.portfolio</span>
+                            </div>
+                            <p class="text-xs text-gray-400">🎪 Festival season highlights! #EventMarketing</p>
+                            <div class="flex gap-4 mt-3 text-xs text-gray-500">
+                                <span>❤️ 2.5K</span>
+                                <span>💬 142</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instagram 스타일 카드 3 -->
+                    <div class="border border-white/10 rounded-2xl overflow-hidden bg-gray-900/50 hover:border-[#bd00ff] transition-colors">
+                        <img src="https://images.unsplash.com/photo-1635241161466-541f065683ba?q=80&w=800&auto=format&fit=crop" alt="Instagram Post 3" class="w-full aspect-square object-cover">
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-[#bd00ff] to-[#ff00aa]"></div>
+                                <span class="font-bold text-sm">@kjy.portfolio</span>
+                            </div>
+                            <p class="text-xs text-gray-400">🤖 AI-powered creativity in action #GenAI</p>
+                            <div class="flex gap-4 mt-3 text-xs text-gray-500">
+                                <span>❤️ 3.1K</span>
+                                <span>💬 203</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JOURNEY & SKILLS -->
+        <section id="journey" class="py-24 px-6 md:px-24 bg-gradient-to-b from-gray-900 to-black">
+            <h2 class="text-4xl md:text-6xl font-black mb-24 text-center font-cyber">JOURNEY & SKILLS</h2>
+            <div class="flex flex-col md:flex-row gap-12 md:gap-24">
+                <!-- Timeline -->
+                <div class="w-full md:w-1/3 space-y-12 border-l border-white/20 pl-8 fade-in">
+                    <div class="relative group">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-gray-800 group-hover:bg-[#0affff] transition-colors"></div>
+                        <div class="font-mono text-[#0affff] text-sm mb-1">2025</div>
+                        <div class="text-2xl font-bold mb-2">Strategist</div>
+                        <div class="text-gray-400 text-sm">Next Level Digital Maker</div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-gray-800 group-hover:bg-[#0affff] transition-colors"></div>
+                        <div class="font-mono text-[#0affff] text-sm mb-1">2023</div>
+                        <div class="text-2xl font-bold mb-2">Marketer</div>
+                        <div class="text-gray-400 text-sm">수원문화재단 홍보 담당</div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-gray-800 group-hover:bg-[#0affff] transition-colors"></div>
+                        <div class="font-mono text-[#0affff] text-sm mb-1">2021</div>
+                        <div class="text-2xl font-bold mb-2">Researcher</div>
+                        <div class="text-gray-400 text-sm">Observer Economy 연구</div>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute -left-[37px] top-1 w-4 h-4 rounded-full bg-gray-800 group-hover:bg-[#0affff] transition-colors"></div>
+                        <div class="font-mono text-[#0affff] text-sm mb-1">2020</div>
+                        <div class="text-2xl font-bold mb-2">Founder</div>
+                        <div class="text-gray-400 text-sm">모랑공방 브랜드 런칭</div>
+                    </div>
+                </div>
+
+                <!-- Skills Grid -->
+                <div class="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6 fade-in">
+                    <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition-all group hover-trigger">
+                        <div class="text-[#0affff] mb-6"><i data-lucide="target" width="32" height="32"></i></div>
+                        <h3 class="text-xl font-bold mb-4">Crisis & IMC</h3>
+                        <p class="text-sm text-gray-400">52만 관객 축제 운영, 돌발 리스크 통제, 이해관계자 조율</p>
+                    </div>
+                    <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition-all group hover-trigger">
+                        <div class="text-[#8b5cf6] mb-6"><i data-lucide="trending-up" width="32" height="32"></i></div>
+                        <h3 class="text-xl font-bold mb-4">Data Strategy</h3>
+                        <p class="text-sm text-gray-400">Observer Economy 분석, 팬덤 행동 연구, ESG 모델 통합</p>
+                    </div>
+                    <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition-all group hover-trigger">
+                        <div class="text-[#ff00aa] mb-6"><i data-lucide="sparkles" width="32" height="32"></i></div>
+                        <h3 class="text-xl font-bold mb-4">Gen AI</h3>
+                        <p class="text-sm text-gray-400">프롬프트 엔지니어링, 작업 효율 70% 증대, 저작권 프리 IP</p>
+                    </div>
+                    <div class="p-8 border border-white/10 rounded-2xl hover:bg-white/5 transition-all group hover-trigger">
+                        <div class="text-[#ffae00] mb-6"><i data-lucide="book-open" width="32" height="32"></i></div>
+                        <h3 class="text-xl font-bold mb-4">Administration</h3>
+                        <p class="text-sm text-gray-400">예술-행정 언어 번역, 공공기관 문서화, 문화행정 전공</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT & AI -->
+        <section id="contact" class="py-24 px-6 md:px-24 bg-black text-center relative overflow-hidden">
+            <div class="max-w-3xl mx-auto relative z-10 fade-in">
+                <h2 class="text-5xl md:text-8xl font-black mb-8 leading-tight font-cyber">HAVE AN IDEA?</h2>
+                <p class="text-xl text-gray-400 mb-12">
+                    Let's build tomorrow, today. <br/> Hit <span class="text-[#0affff]">Enter</span> or type below.
+                </p>
+                <div class="relative group">
+                    <input type="text" id="ai-input-main" 
+                        class="w-full bg-transparent border-b-2 border-gray-700 text-2xl md:text-4xl py-4 text-center focus:outline-none focus:border-[#0affff] transition-colors placeholder:text-gray-800 text-white"
+                        placeholder="What's your next big thing?"
+                        onkeypress="if(event.key === 'Enter') generateAiIdea('main')">
+                    <i data-lucide="send" class="absolute right-0 top-1/2 -translate-y-1/2 text-gray-700 group-hover:text-[#0affff] transition-colors"></i>
+                </div>
+                <div id="ai-result-main" class="mt-12 text-left hidden">
+                    <div class="p-8 border border-[#0affff]/30 bg-[#0affff]/5 rounded-2xl">
+                        <div class="text-[#0affff] text-sm font-bold mb-4 uppercase tracking-widest">AI Suggestion</div>
+                        <p class="text-lg leading-relaxed whitespace-pre-wrap" id="ai-text-main"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-12 px-6 border-t border-white/10 bg-black">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-sm text-gray-500">
+                    © 2025 Kim Jiyeon. All rights reserved.
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="text-gray-500 hover:text-[#0affff] transition-colors hover-trigger">
+                        <i data-lucide="linkedin" width="20"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-[#0affff] transition-colors hover-trigger">
+                        <i data-lucide="instagram" width="20"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-[#0affff] transition-colors hover-trigger">
+                        <i data-lucide="mail" width="20"></i>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- 8. 모달 (프로젝트 상세) -->
+    <div id="project-modal" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute top-8 right-8 cursor-pointer z-50 p-2 bg-white/10 rounded-full hover:bg-white hover:text-black transition-all" onclick="closeProjectModal()">
+            <i data-lucide="x" width="24"></i>
+        </div>
+        <div class="max-w-5xl w-full h-full overflow-y-auto bg-[#111] border border-white/10 rounded-3xl p-8 md:p-16 relative">
+            <div id="modal-category" class="text-[#0affff] font-mono mb-4">CATEGORY</div>
+            <h2 id="modal-title" class="text-4xl md:text-6xl font-black mb-12 font-cyber">TITLE</h2>
+            
+            <!-- 모달 내 이미지 갤러리 -->
+            <div id="modal-gallery" class="mb-12 grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-sm text-gray-500 font-bold mb-2 uppercase">Context</h3>
+                        <p id="modal-context" class="text-xl">...</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm text-gray-500 font-bold mb-2 uppercase">Solution</h3>
+                        <p id="modal-solution" class="text-gray-300">...</p>
+                    </div>
+                </div>
+                <div class="space-y-8 text-sm font-mono text-gray-400">
+                    <div class="flex justify-between border-b border-gray-800 pb-2"><span>Year</span><span id="modal-year" class="text-white">2025</span></div>
+                    <div class="flex justify-between border-b border-gray-800 pb-2"><span>Role</span><span class="text-white">Planning & Design</span></div>
+                    <div class="flex justify-between border-b border-gray-800 pb-2"><span>Impact</span><span id="modal-impact" class="text-white">High</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. AI 모달 -->
+    <div id="ai-modal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-xl flex items-center justify-center p-4 hidden">
+        <div class="bg-[#111] border border-white/20 w-full max-w-2xl rounded-2xl p-8 relative shadow-2xl shadow-[#0affff]/20">
+            <i data-lucide="x" class="absolute top-6 right-6 cursor-pointer hover:text-[#0affff]" onclick="closeAiModal()"></i>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-[#0affff] flex items-center justify-center text-black"><i data-lucide="bot"></i></div>
+                <div><h3 class="text-2xl font-bold">AI CREATIVE LAB</h3><p class="text-sm text-gray-400">Project Consultant Persona</p></div>
+            </div>
+            <div class="h-64 overflow-y-auto bg-black/50 rounded-xl p-6 mb-6 border border-white/5 space-y-4">
+                <div class="bg-gray-800/50 p-4 rounded-lg rounded-tl-none self-start max-w-[80%] text-sm">
+                    안녕하세요! 김지연 마케터의 AI 페르소나입니다.<br>기획하고 싶은 프로젝트 주제를 입력하시면 솔루션을 제안해드립니다.
+                </div>
+                <div id="ai-chat-result" class="bg-[#0affff]/10 border border-[#0affff]/30 p-4 rounded-lg rounded-tl-none self-start max-w-[90%] text-sm leading-relaxed hidden"></div>
+                <div id="ai-loading" class="text-xs text-[#0affff] animate-pulse hidden">AI Thinking...</div>
+            </div>
+            <div class="relative">
+                <input type="text" id="ai-input-modal" class="w-full bg-gray-900 border border-white/10 rounded-full px-6 py-4 pr-12 focus:border-[#0affff] focus:outline-none transition-colors text-white" placeholder="Ex. 전통시장 활성화 방안..." onkeypress="if(event.key === 'Enter') generateAiIdea('modal')">
+                <button onclick="generateAiIdea('modal')" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-[#0affff] text-black rounded-full hover:scale-110 transition-transform"><i data-lucide="send" width="16"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 아이콘 초기화
+        lucide.createIcons();
+
+        // 2. Three.js 배경 효과
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 2000;
+        const posArray = new Float32Array(particlesCount * 3);
+        for(let i = 0; i < particlesCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 15;
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0x0affff, transparent: true, opacity: 0.8 });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+        camera.position.z = 5;
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.001;
+            particlesMesh.rotation.x += (mouseY * 0.1 - particlesMesh.rotation.x) * 0.05;
+            particlesMesh.rotation.y += (mouseX * 0.1 - particlesMesh.rotation.y) * 0.05;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 3. 커스텀 커서
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+            cursorOutline.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        });
+
+        document.querySelectorAll('.hover-trigger').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.transform += ' scale(2.5)';
+                cursorDot.style.opacity = '0';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.transform = cursorOutline.style.transform.replace(' scale(2.5)', '');
+                cursorDot.style.opacity = '1';
+            });
+        });
+
+        // 4. 스크롤 진행 바
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (scrollTop / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + "%";
+            
+            // Fade In 효과
+            document.querySelectorAll('.fade-in').forEach(el => {
+                if(el.getBoundingClientRect().top < window.innerHeight - 100) {
+                    el.classList.add('visible');
+                }
+            });
+        });
+
+        // 5. 메뉴 토글
+        const menu = document.getElementById('menu-overlay');
+        function toggleMenu() {
+            if(menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                setTimeout(() => menu.classList.remove('opacity-0'), 10);
+            } else {
+                menu.classList.add('opacity-0');
+                setTimeout(() => menu.classList.add('hidden'), 300);
+            }
+        }
+
+        // 6. 프로젝트 데이터 및 모달
+        const projectData = {
+            '01': { 
+                title: 'KKOJILLAND', 
+                cat: 'FANDOM', 
+                year: '2025', 
+                context: '버추얼 아이돌 팬덤의 니즈를 반영한 오프라인 행사 기획.', 
+                solution: '카지노 컨셉의 게이미피케이션 요소 도입 및 굿즈 제작.',
+                impact: '참여자 만족도 95%',
+                images: [
+                    'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=600',
+                    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=600',
+                    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=600'
+                ]
+            },
+            '02': { 
+                title: 'SUWON MEDIA', 
+                cat: 'MEGA EVENT', 
+                year: '2025', 
+                context: '대형 축제 중 우천 발생 위기 상황.', 
+                solution: '우천을 마케팅 포인트로 활용, 상인 이탈 방지 데이터 솔루션.',
+                impact: '52만 관객 동원',
+                images: [
+                    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=600',
+                    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=600',
+                    'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=600'
+                ]
+            },
+            '03': { 
+                title: 'BAEKHO', 
+                cat: 'AI ART', 
+                year: '2024', 
+                context: 'K-POP 아티스트의 청각적 서사 시각화 필요.', 
+                solution: '생성형 AI 프롬프트 엔지니어링으로 초현실적 아트워크 제작.',
+                impact: '70% 효율 증대',
+                images: [
+                    'https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=600',
+                    'https://images.unsplash.com/photo-1635241161466-541f065683ba?q=80&w=600',
+                    'https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=600'
+                ]
+            }
+        };
+
+        const pModal = document.getElementById('project-modal');
+        function openProjectModal(id) {
+            const data = projectData[id];
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-category').innerText = data.cat;
+            document.getElementById('modal-year').innerText = data.year;
+            document.getElementById('modal-context').innerText = data.context;
+            document.getElementById('modal-solution').innerText = data.solution;
+            document.getElementById('modal-impact').innerText = data.impact;
+            
+            // 이미지 갤러리 추가
+            const gallery = document.getElementById('modal-gallery');
+            gallery.innerHTML = '';
+            data.images.forEach(img => {
+                const imgEl = document.createElement('img');
+                imgEl.src = img;
+                imgEl.className = 'w-full h-32 object-cover rounded-lg border border-white/10';
+                gallery.appendChild(imgEl);
+            });
+            
+            pModal.classList.remove('hidden');
+            setTimeout(() => {
+                pModal.classList.remove('opacity-0');
+                lucide.createIcons();
+            }, 10);
+        }
+        function closeProjectModal() {
+            pModal.classList.add('opacity-0');
+            setTimeout(() => pModal.classList.add('hidden'), 300);
+        }
+
+        // 7. AI 모달
+        const aiModal = document.getElementById('ai-modal');
+        function openAiModal() { 
+            aiModal.classList.remove('hidden'); 
+            setTimeout(() => lucide.createIcons(), 10);
+        }
+        function closeAiModal() { aiModal.classList.add('hidden'); }
+
+        // 8. AI 생성 시뮬레이션
+        function generateAiIdea(type) {
+            const inputId = type === 'main' ? 'ai-input-main' : 'ai-input-modal';
+            const resultId = type === 'main' ? 'ai-result-main' : 'ai-chat-result';
+            const textId = type === 'main' ? 'ai-text-main' : 'ai-chat-result';
+            const loadingId = 'ai-loading';
+            
+            const inputVal = document.getElementById(inputId).value;
+            if(!inputVal) return;
+
+            if(type === 'modal') {
+                document.getElementById(loadingId).classList.remove('hidden');
+                document.getElementById(resultId).classList.add('hidden');
+            }
+
+            // 시뮬레이션 딜레이
+            setTimeout(() => {
+                const dummyResponse = `[AI 분석 결과: ${inputVal}]\n\n1. 핵심 타겟: 경험 중시형 2030 세대\n2. 위기 요인: 오프라인 트래픽 감소\n3. 솔루션: "관전 경제" 모델을 도입하여 비참여자도 즐길 수 있는 '게이미피케이션' 요소 추가. 팝업스토어 대신 '세계관 체험관'으로 리브랜딩 추천.\n4. 예상 효과: 참여율 40% 증가, SNS 확산 효과`;
+                
+                if(type === 'modal') {
+                    document.getElementById(loadingId).classList.add('hidden');
+                    document.getElementById(resultId).innerText = dummyResponse;
+                    document.getElementById(resultId).classList.remove('hidden');
+                } else {
+                    document.getElementById('ai-text-main').innerText = dummyResponse;
+                    document.getElementById('ai-result-main').classList.remove('hidden');
+                }
+            }, 1500);
+        }
+
+        // 초기 fade-in 트리거
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+</html>
