@@ -144,46 +144,52 @@
     <main>
         <!-- HERO -->
         <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
-            <!-- 메인 질문 -->
-            <h1 class="font-black leading-tight mb-12 font-cyber">
-                <div class="text-2xl md:text-3xl text-gray-400 mb-4 tracking-wider">DO YOU WANT</div>
-                <div class="text-5xl md:text-7xl lg:text-8xl mb-3" style="-webkit-text-stroke: 2px #0affff; color: transparent; text-shadow: 0 0 20px rgba(10,255,255,0.3);">
+            <!-- 메인 질문 - 개선된 가독성 -->
+            <h1 class="font-black leading-tight mb-16 font-cyber">
+                <div class="text-xl md:text-2xl text-gray-300 mb-8 tracking-[0.3em] font-light">DO YOU WANT</div>
+                
+                <!-- FANDOM - 향상된 가시성 -->
+                <div class="text-6xl md:text-8xl lg:text-9xl mb-4 relative" style="color: rgba(10,255,255,0.9); text-shadow: 0 0 40px rgba(10,255,255,0.5), 0 0 80px rgba(10,255,255,0.3); -webkit-text-stroke: 1px rgba(10,255,255,0.3);">
                     FANDOM
                 </div>
-                <div class="text-2xl md:text-4xl text-white mb-3 tracking-[0.3em]">TO</div>
-                <div class="text-5xl md:text-7xl lg:text-8xl mb-3" style="-webkit-text-stroke: 2px #ff00aa; color: transparent; text-shadow: 0 0 20px rgba(255,0,170,0.3);">
+                
+                <div class="text-3xl md:text-4xl text-white/80 mb-4 tracking-[0.5em] font-light">TO</div>
+                
+                <!-- REVENUE - 향상된 가시성 -->
+                <div class="text-6xl md:text-8xl lg:text-9xl mb-6 relative" style="color: rgba(255,0,170,0.9); text-shadow: 0 0 40px rgba(255,0,170,0.5), 0 0 80px rgba(255,0,170,0.3); -webkit-text-stroke: 1px rgba(255,0,170,0.3);">
                     REVENUE
                 </div>
-                <div class="text-4xl md:text-6xl text-white" style="text-shadow: 0 0 15px rgba(255,255,255,0.5);">?</div>
+                
+                <div class="text-5xl md:text-7xl text-white mb-2" style="text-shadow: 0 0 30px rgba(255,255,255,0.8);">?</div>
             </h1>
 
-            <!-- 서브타이틀 -->
-            <div class="space-y-3 mb-10">
-                <p class="text-base md:text-lg text-gray-400 tracking-wide">
+            <!-- 서브타이틀 - 대비 강화 -->
+            <div class="space-y-4 mb-12 max-w-2xl">
+                <p class="text-lg md:text-xl text-gray-200 tracking-wide leading-relaxed">
                     팬덤을 이해하고, 수익으로 전환하는
                 </p>
-                <div class="text-xs md:text-sm tracking-[0.4em] text-[#0affff] font-cyber animate-pulse">
+                <div class="text-sm md:text-base tracking-[0.3em] text-[#0affff] font-cyber" style="text-shadow: 0 0 10px rgba(10,255,255,0.5);">
                     DIGITAL STRATEGIST & CRISIS MANAGER
                 </div>
             </div>
 
-            <!-- 이름 (작게) -->
-            <div class="text-lg md:text-xl text-gray-500 mb-10 font-light">
+            <!-- 이름 - 가독성 향상 -->
+            <div class="text-base md:text-lg text-gray-400 mb-16 font-light tracking-wide">
                 김지연 포트폴리오
             </div>
 
-            <!-- 배지들 -->
-            <div class="flex flex-wrap gap-3 justify-center mb-12">
+            <!-- 배지들 - 간격 조정 -->
+            <div class="flex flex-wrap gap-4 justify-center mb-16 max-w-3xl">
                 <span class="achievement-badge">🏆 모범직원 표창장 (신규 6개월)</span>
                 <span class="achievement-badge">📈 SNS 조회수 55배 증가</span>
                 <span class="achievement-badge">👥 51만 명 무사고 관리</span>
                 <span class="achievement-badge">⚡ 13일 만에 이벤트 완성</span>
             </div>
 
-            <!-- 스크롤 다운 -->
-            <div class="flex flex-col items-center gap-2 text-xs text-gray-500 animate-bounce cursor-pointer" onclick="document.getElementById('social-showcase').scrollIntoView({behavior:'smooth'})">
-                SCROLL DOWN
-                <i data-lucide="arrow-down" width="16"></i>
+            <!-- 스크롤 다운 - 가시성 향상 -->
+            <div class="flex flex-col items-center gap-2 text-xs text-gray-400 animate-bounce cursor-pointer hover:text-[#0affff] transition-colors" onclick="document.getElementById('social-showcase').scrollIntoView({behavior:'smooth'})">
+                <span class="tracking-widest">SCROLL DOWN</span>
+                <i data-lucide="arrow-down" width="20"></i>
             </div>
         </section>
 
