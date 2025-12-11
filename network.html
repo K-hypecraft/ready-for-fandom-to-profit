@@ -145,6 +145,34 @@
             gap: 5px;
             line-height: 1.2;
         }
+
+        /* Privacy Protection Styles */
+        .card-name.privacy-protected {
+            position: relative;
+            filter: blur(3px);
+            -webkit-filter: blur(3px);
+            user-select: none;
+        }
+
+        .privacy-lock {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #E60012;
+            font-size: 18px;
+            z-index: 100;
+            filter: none;
+            -webkit-filter: none;
+            pointer-events: none;
+            text-shadow: 0 2px 8px rgba(230, 0, 18, 0.3);
+            animation: lockPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes lockPulse {
+            0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
         
         .card-title {
             font-size: 10px;
@@ -335,7 +363,7 @@
                 <!-- Card 1: 이원준 -->
                 <div class="name-card">
                     <span class="card-role-badge">Direct Collaboration</span>
-                    <div class="card-name">이** 총감독 <span class="card-title">대형 공연 연출</span></div>
+                    <div class="card-name privacy-protected">이원준 총감독 <span class="privacy-lock"><i class="fas fa-lock"></i></span> <span class="card-title">대형 공연 연출</span></div>
                     <div class="card-section-divider"></div>
                     <div class="card-info-row">
                         <span class="info-label">Project</span>
@@ -350,7 +378,7 @@
                 <!-- Card 2: 이진수 -->
                 <div class="name-card">
                     <span class="card-role-badge">Direct Collaboration</span>
-                    <div class="card-name">이** 기술감독 <span class="card-title">무대기술 총괄</span></div>
+                    <div class="card-name privacy-protected">이진수 기술감독 <span class="privacy-lock"><i class="fas fa-lock"></i></span> <span class="card-title">무대기술 총괄</span></div>
                     <div class="card-section-divider"></div>
                     <div class="card-info-row">
                         <span class="info-label">Project</span>
@@ -365,7 +393,7 @@
                 <!-- Card 3: 신근희 -->
                 <div class="name-card">
                     <span class="card-role-badge">Direct Collaboration</span>
-                    <div class="card-name">신** 콘텐츠감독 <span class="card-title">미디어아트 기획</span></div>
+                    <div class="card-name privacy-protected">신근희 콘텐츠감독 <span class="privacy-lock"><i class="fas fa-lock"></i></span> <span class="card-title">미디어아트 기획</span></div>
                     <div class="card-section-divider"></div>
                     <div class="card-info-row">
                         <span class="info-label">Project</span>
@@ -431,7 +459,7 @@
                 <!-- Card 5: 조성원 -->
                 <div class="name-card">
                     <span class="card-role-badge bg-gray-800">Key Partner</span>
-                    <div class="card-name">조** 단장 <span class="card-title">씨즈엔터 대표</span></div>
+                    <div class="card-name privacy-protected">조성원 단장 <span class="privacy-lock"><i class="fas fa-lock"></i></span> <span class="card-title">씨즈엔터 대표</span></div>
                     <div class="card-section-divider"></div>
                     <div class="card-info-row">
                         <span class="info-label">Expertise</span>
@@ -456,10 +484,10 @@
                     <span class="category-title">4. Strategic Advisory</span>
                 </div>
 
-                <!-- Card 6: 안** -->
+                <!-- Card 6: 안성아 -->
                 <div class="name-card featured">
                     <span class="card-role-badge premium">Premium Advisor</span>
-                    <div class="card-name" style="font-size: 16px;">안** 교수 <span class="card-title">추계예대 주임교수</span></div>
+                    <div class="card-name privacy-protected" style="font-size: 16px;">안성아 교수 <span class="privacy-lock"><i class="fas fa-lock"></i></span> <span class="card-title">추계예대 주임교수</span></div>
                     <div class="card-section-divider"></div>
                     <div class="text-xs text-gray-500 mb-1 leading-tight" style="font-size: 9px;">
                         포브스코리아 선정 '문화예술마케팅 개척자'<br/>
