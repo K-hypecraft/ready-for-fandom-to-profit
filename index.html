@@ -144,30 +144,43 @@
     <main>
         <!-- HERO -->
         <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black leading-tight mb-8">
-                <div class="text-white mb-4">DO YOU WANT</div>
-                <div class="flex flex-wrap justify-center gap-4 items-center">
-                    <span class="text-[#0affff] text-shadow-neon">FANDOM</span>
-                    <span class="text-white">TO</span>
-                    <span class="text-[#ff00aa] text-shadow-neon-pink">REVENUE</span>
-                    <span class="text-white text-5xl md:text-7xl">?</span>
+            <!-- 메인 질문 (초대형) -->
+            <h1 class="font-black leading-none mb-16 font-cyber">
+                <div class="text-3xl md:text-5xl text-gray-400 mb-6 tracking-wider">DO YOU WANT</div>
+                <div class="text-7xl md:text-9xl lg:text-[12rem] mb-4" style="-webkit-text-stroke: 2px #0affff; color: transparent; text-shadow: 0 0 30px rgba(10,255,255,0.3);">
+                    FANDOM
                 </div>
+                <div class="text-4xl md:text-6xl text-white mb-4 tracking-[0.5em]">TO</div>
+                <div class="text-7xl md:text-9xl lg:text-[12rem] mb-4" style="-webkit-text-stroke: 2px #ff00aa; color: transparent; text-shadow: 0 0 30px rgba(255,0,170,0.3);">
+                    REVENUE
+                </div>
+                <div class="text-6xl md:text-8xl text-white" style="text-shadow: 0 0 20px rgba(255,255,255,0.5);">?</div>
             </h1>
-            <p class="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed">
-                팬덤을 이해하고, 수익으로 전환하는
-            </p>
-            <div class="text-sm md:text-base tracking-[0.3em] text-[#0affff] mb-3 font-cyber">
-                DIGITAL STRATEGIST & CRISIS MANAGER
+
+            <!-- 서브타이틀 -->
+            <div class="space-y-4 mb-12">
+                <p class="text-lg md:text-xl text-gray-400 tracking-wide">
+                    팬덤을 이해하고, 수익으로 전환하는
+                </p>
+                <div class="text-xs md:text-sm tracking-[0.5em] text-[#0affff] font-cyber animate-pulse">
+                    DIGITAL STRATEGIST & CRISIS MANAGER
+                </div>
             </div>
-            <div class="text-3xl md:text-5xl font-black text-white mb-12 font-cyber">
+
+            <!-- 이름 (작게) -->
+            <div class="text-xl md:text-2xl text-gray-500 mb-12 font-light">
                 김지연 포트폴리오
             </div>
+
+            <!-- 배지들 -->
             <div class="flex flex-wrap gap-3 justify-center mb-12">
                 <span class="achievement-badge">🏆 모범직원 표창장 (신규 6개월)</span>
                 <span class="achievement-badge">📈 SNS 조회수 55배 증가</span>
                 <span class="achievement-badge">👥 51만 명 무사고 관리</span>
                 <span class="achievement-badge">⚡ 13일 만에 이벤트 완성</span>
             </div>
+
+            <!-- 스크롤 다운 -->
             <div class="flex flex-col items-center gap-2 text-xs text-gray-500 animate-bounce cursor-pointer" onclick="document.getElementById('social-showcase').scrollIntoView({behavior:'smooth'})">
                 SCROLL DOWN
                 <i data-lucide="arrow-down" width="16"></i>
