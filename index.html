@@ -186,11 +186,17 @@
                 </p>
             </div>
 
-            <!-- CTA Button - 강력한 행동 유도 -->
-            <a href="#achievements" class="group mb-16 px-10 py-5 bg-gradient-to-r from-[#66FCF1] to-[#cb6ce6] text-black font-black text-lg rounded-full hover:shadow-[0_0_40px_rgba(102,252,241,0.6)] transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 cursor-pointer inline-flex items-center gap-3" style="font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em;">
-                VIEW MY STRATEGY
-                <i data-lucide="arrow-right" width="24" class="group-hover:translate-x-2 transition-transform"></i>
-            </a>
+            <!-- CTA Buttons - 강력한 행동 유도 -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-16">
+                <a href="#" onclick="alert('PDF 포트폴리오 다운로드 기능은 준비 중입니다. 현재 웹 포트폴리오로 모든 내용을 확인하실 수 있습니다.'); return false;" class="group px-10 py-5 bg-gradient-to-r from-[#66FCF1] to-[#cb6ce6] text-black font-black text-lg rounded-full hover:shadow-[0_0_40px_rgba(102,252,241,0.6)] transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 cursor-pointer inline-flex items-center gap-3" style="font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em;">
+                    <i data-lucide="download" width="24"></i>
+                    DOWNLOAD PDF
+                </a>
+                <a href="#achievements" class="group px-10 py-5 bg-white/10 backdrop-blur-sm border-2 border-[#66FCF1] text-[#66FCF1] font-black text-lg rounded-full hover:bg-[#66FCF1] hover:text-black transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 cursor-pointer inline-flex items-center gap-3" style="font-family: 'Montserrat', sans-serif; letter-spacing: 0.05em;">
+                    VIEW PORTFOLIO
+                    <i data-lucide="arrow-right" width="24" class="group-hover:translate-x-2 transition-transform"></i>
+                </a>
+            </div>
 
             <!-- 배지들 - 간격 조정 -->
             <div class="flex flex-wrap gap-4 justify-center mb-16 max-w-3xl">
@@ -518,6 +524,42 @@
                             <div class="stat-card p-6 rounded-xl">
                                 <div class="text-3xl font-black text-[#bd00ff]">500만</div>
                                 <div class="text-xs text-gray-400">보조금 정산</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오픈갤러리 AI 작가 -->
+            <div class="mb-24 fade-in">
+                <div class="project-card p-8 md:p-12 rounded-3xl bg-black/50 overflow-hidden">
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="w-full md:w-2/3">
+                            <div class="text-[#00ff9f] font-mono text-sm mb-2">2024</div>
+                            <h3 class="text-3xl md:text-5xl font-black mb-6 text-[#00ff9f]">오픈갤러리 AI 작가</h3>
+                            <div class="text-xl font-bold mb-4">Tech-based IP Creation</div>
+                            <p class="text-gray-400 mb-6 leading-relaxed">
+                                AI 아트워크 100+ 포트폴리오 기반 독점 계약 체결. Midjourney를 활용한 저작권 프리 IP 대량 생산 시스템 구축.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-[#00ff9f]/10 border border-[#00ff9f] rounded-full text-xs">AI Art</span>
+                                <span class="px-3 py-1 bg-[#00ff9f]/10 border border-[#00ff9f] rounded-full text-xs">IP Creation</span>
+                                <span class="px-3 py-1 bg-[#00ff9f]/10 border border-[#00ff9f] rounded-full text-xs">Prompt Engineering</span>
+                                <span class="px-3 py-1 bg-[#00ff9f]/10 border border-[#00ff9f] rounded-full text-xs">Copyright-Free</span>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-1/3 flex flex-col justify-center gap-4">
+                            <div class="stat-card p-6 rounded-xl">
+                                <div class="text-3xl font-black text-[#00ff9f]">100+</div>
+                                <div class="text-xs text-gray-400">AI Artwork IP</div>
+                            </div>
+                            <div class="stat-card p-6 rounded-xl">
+                                <div class="text-3xl font-black text-[#00ff9f]">90%</div>
+                                <div class="text-xs text-gray-400">Cost Reduction</div>
+                            </div>
+                            <div class="stat-card p-6 rounded-xl">
+                                <div class="text-3xl font-black text-[#00ff9f]">독점</div>
+                                <div class="text-xs text-gray-400">Gallery Contract</div>
                             </div>
                         </div>
                     </div>
@@ -890,173 +932,6 @@
             </div>
         </section>
 
-        <!-- MULTIDISCIPLINARY BACKGROUND -->
-        <section id="background" class="py-24 px-6 md:px-24 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
-            <div class="text-center mb-16 fade-in">
-                <h2 class="text-4xl md:text-6xl font-black mb-6 font-cyber text-[#0affff]">MULTIDISCIPLINARY BACKGROUND</h2>
-                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
-                    Culture · Arts · Business
-                </p>
-            </div>
-
-            <!-- Horizontal Scrolling Cards -->
-            <div class="relative max-w-7xl mx-auto">
-
-
-                <div class="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide" style="scroll-padding: 0 24px;">
-                    <!-- Card 1: Open Gallery & AI -->
-                    <div class="flex-none w-80 snap-center">
-                        <div class="bg-gradient-to-br from-cyan-950/40 to-black border-2 border-cyan-500/30 rounded-2xl p-6 h-full hover:border-cyan-500 transition-all fade-in">
-                            <div class="text-5xl mb-4">🤖</div>
-                            <h3 class="text-2xl font-black text-cyan-400 mb-3">Open Gallery & AI Artist</h3>
-                            <div class="text-sm text-gray-500 mb-4">2024 | 독점 계약</div>
-                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                100+ AI Artwork IP. Midjourney Prompt Engineering. 저작권 프리.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-cyan-500/10 border border-cyan-500 rounded text-xs">IP Scaling</span>
-                                <span class="px-2 py-1 bg-cyan-500/10 border border-cyan-500 rounded text-xs">Zero Copyright</span>
-                                <span class="px-2 py-1 bg-cyan-500/10 border border-cyan-500 rounded text-xs">90% Cost Reduction</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: 추계예대 조교 -->
-                    <div class="flex-none w-80 snap-center">
-                        <div class="bg-gradient-to-br from-purple-950/40 to-black border-2 border-purple-500/30 rounded-2xl p-6 h-full hover:border-purple-500 transition-all fade-in">
-                            <div class="text-5xl mb-4">📚</div>
-                            <h3 class="text-2xl font-black text-purple-400 mb-3">추계예술대학교 조교</h3>
-                            <div class="text-sm text-gray-500 mb-4">2022~2024 | 2년</div>
-                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                Spectator Economy Research. 팬덤 소비 심리 분석. Project Management.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-purple-500/10 border border-purple-500 rounded text-xs">Academic Research</span>
-                                <span class="px-2 py-1 bg-purple-500/10 border border-purple-500 rounded text-xs">Fandom Data</span>
-                                <span class="px-2 py-1 bg-purple-500/10 border border-purple-500 rounded text-xs">PM</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: 박물관 도슨트 -->
-                    <div class="flex-none w-80 snap-center">
-                        <div class="bg-gradient-to-br from-pink-950/40 to-black border-2 border-pink-500/30 rounded-2xl p-6 h-full hover:border-pink-500 transition-all fade-in">
-                            <div class="text-5xl mb-4">🎨</div>
-                            <h3 class="text-2xl font-black text-pink-400 mb-3">현대미술관 도슨트</h3>
-                            <div class="text-sm text-gray-500 mb-4">2018~2019 | 1년+</div>
-                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                Audience Experience Design. Storytelling. 대중 커뮤니케이션.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-pink-500/10 border border-pink-500 rounded text-xs">CX Design</span>
-                                <span class="px-2 py-1 bg-pink-500/10 border border-pink-500 rounded text-xs">Storytelling</span>
-                                <span class="px-2 py-1 bg-pink-500/10 border border-pink-500 rounded text-xs">Public Communication</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: 모랑/꾸니 공방 -->
-                    <div class="flex-none w-80 snap-center">
-                        <div class="bg-gradient-to-br from-amber-950/40 to-black border-2 border-amber-500/30 rounded-2xl p-6 h-full hover:border-amber-500 transition-all fade-in">
-                            <div class="text-5xl mb-4">🏺</div>
-                            <h3 class="text-2xl font-black text-amber-400 mb-3">모랑·꾸니 공방 대표</h3>
-                            <div class="text-sm text-gray-500 mb-4">2019~2021 | 2년</div>
-                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                K-POP Fandom Ceramic Art Toy Brand. Pre-order 3차 완판. 재고 리스크 0.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-amber-500/10 border border-amber-500 rounded text-xs">Zero Inventory</span>
-                                <span class="px-2 py-1 bg-amber-500/10 border border-amber-500 rounded text-xs">UGC Marketing</span>
-                                <span class="px-2 py-1 bg-amber-500/10 border border-amber-500 rounded text-xs">Fandom Business</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 5: 도예 레지던시 -->
-                    <div class="flex-none w-80 snap-center">
-                        <div class="bg-gradient-to-br from-green-950/40 to-black border-2 border-green-500/30 rounded-2xl p-6 h-full hover:border-green-500 transition-all fade-in">
-                            <div class="text-5xl mb-4">🌏</div>
-                            <h3 class="text-2xl font-black text-green-400 mb-3">한국도자재단 레지던시</h3>
-                            <div class="text-sm text-gray-500 mb-4">2018 | 글로벌 프로그램</div>
-                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
-                                International Artist Network. Cultural Exchange Program.
-                            </p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-2 py-1 bg-green-500/10 border border-green-500 rounded text-xs">Global Network</span>
-                                <span class="px-2 py-1 bg-green-500/10 border border-green-500 rounded text-xs">Cultural Planning</span>
-                                <span class="px-2 py-1 bg-green-500/10 border border-green-500 rounded text-xs">Cross-Culture</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </section>
-
-        <!-- VISUAL SHOWCASE -->
-        <section id="gallery" class="py-24 px-6 md:px-24 bg-black">
-            <h2 class="text-4xl md:text-6xl font-black mb-4 text-center font-cyber text-[#0affff]">VISUAL SHOWCASE</h2>
-            <p class="text-center text-gray-400 mb-16">실제 프로젝트 현장과 작품들</p>
-            
-            <div class="max-w-7xl mx-auto">
-                <!-- 꼬질랜드 섹션 -->
-                <div class="mb-20 fade-in">
-                    <h3 class="text-2xl font-bold mb-8 text-[#ff00aa] font-cyber">꼬질랜드 - 버추얼 IP 이벤트 (2025.11)</h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="border border-white/10 rounded-xl overflow-hidden hover:border-[#ff00aa] transition-all group">
-                            <img src="images/kkojilland-01.jpg" alt="꼬질랜드 크리스마스 트리" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="p-4 bg-black/50">
-                                <h4 class="font-bold mb-1">카지노 컨셉 공간</h4>
-                                <p class="text-xs text-gray-400">13일 만에 완성한 이벤트 현장</p>
-                            </div>
-                        </div>
-                        <div class="border border-white/10 rounded-xl overflow-hidden hover:border-[#ff00aa] transition-all group">
-                            <img src="images/kkojilland-02.jpg" alt="꼬질랜드 굿즈" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="p-4 bg-black/50">
-                                <h4 class="font-bold mb-1">전프레 굿즈</h4>
-                                <p class="text-xs text-gray-400">팬아트 기반 소장 가치 극대화</p>
-                            </div>
-                        </div>
-                        <div class="border border-white/10 rounded-xl overflow-hidden hover:border-[#ff00aa] transition-all group">
-                            <img src="images/kkojilland-03.jpg" alt="꼬질랜드 카지노 게임" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="p-4 bg-black/50">
-                                <h4 class="font-bold mb-1">게이미피케이션</h4>
-                                <p class="text-xs text-gray-400">온라인 밈의 오프라인 전환</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 모랑공방 섹션 -->
-                <div class="fade-in">
-                    <h3 class="text-2xl font-bold mb-8 text-[#ffae00] font-cyber">모랑공방 - 팬덤 도자 브랜드 (2019~2021)</h3>
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="border border-white/10 rounded-xl overflow-hidden hover:border-[#ffae00] transition-all group">
-                            <img src="images/morang-01.png" alt="모랑공방 작업실" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="p-4 bg-black/50">
-                                <h4 class="font-bold mb-1">작업 공간</h4>
-                                <p class="text-xs text-gray-400">도자 아트토이 제작 과정 공개</p>
-                            </div>
-                        </div>
-                        <div class="border border-white/10 rounded-xl overflow-hidden hover:border-[#ffae00] transition-all group">
-                            <img src="images/morang-02.jpg" alt="돌쥬 제작 과정" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="p-4 bg-black/50">
-                                <h4 class="font-bold mb-1">돌쥬 제작</h4>
-                                <p class="text-xs text-gray-400">K-POP 팬덤 타겟 아트토이</p>
-                            </div>
-                        </div>
-                        <div class="border border-white/10 rounded-xl overflow-hidden hover:border-[#ffae00] transition-all group">
-                            <img src="images/morang-03.png" alt="드림포터 굿즈" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="p-4 bg-black/50">
-                                <h4 class="font-bold mb-1">드림포터 라인</h4>
-                                <p class="text-xs text-gray-400">Pre-order 3차 완판 달성</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- CONTACT -->
         <section id="contact" class="py-24 px-6 md:px-24 bg-gradient-to-b from-black to-gray-900 text-center">
